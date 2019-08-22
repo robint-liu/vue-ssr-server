@@ -1,32 +1,19 @@
 const Vue = require('vue');
-const server = require("express")();
-const renderer = require('vue-server-renderer').createRenderer({
-  template: require('fs').readFileSync('./index.template.html', 'utf-8')
-});
+const App = require('./App');
 
-server.get('*', (req, res) => {
-  const app = new Vue({
-    data:{
-      url: req.url
+/*
+* 工厂模式：在函数内创建一个对象并给对象赋予属性及方法，最终将对象返回。
+* 作用：解决了当创建多个对象时，代码重复的问题；虽创建多个相似的对象，但是却没有解决对象的识别问题(不知道这个对象的类型)
+* */
+
+// 应用程序、router 和 store 实例
+module.exports = function createApp(context) {
+  return new Vue({
+    // 根实例简单的渲染应用程序组件。
+    // render: h => h(App),
+    data: {
+      url: context.url
     },
-    template: `<div>this url is {{ url }}</div>`
+    template: `<div>123</div>`
   });
-  const context = {
-    title: 'Vue SSR',
-    meta: `
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Vue.js 服务端渲染指南">
-  `
-  };
-  renderer.renderToString(app, context, ((err, html) => {
-    if (err){
-      res.status(500).end('Internal Server Error');
-      return;
-    }
-    console.log(html) // html 将是注入应用程序内容的完整页面
-    res.end(html);
-  }));
-});
-
-server.listen(3000, () => console.log('example app listening on port 3000'));
+};
