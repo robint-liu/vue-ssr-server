@@ -10,7 +10,7 @@ const App = require('./App');
 module.exports = function createApp(context) {
   return new Vue({
     // 根实例简单的渲染应用程序组件。
-    // render: h => h(App), //render失效
+    // render: h => h(App),
     data: {
       url: context.url
     },
